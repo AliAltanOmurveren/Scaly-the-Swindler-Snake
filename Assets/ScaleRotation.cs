@@ -11,17 +11,18 @@ public class ScaleRotation : MonoBehaviour
     public GameObject right_arm_connection_point;
     public GameObject scale_left_arm;
     bool scale_top_is_rotating = false;
-    float turn_amount = 20;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        scale_right_arm.transform.position = right_arm_connection_point.transform.position;
+
         if(Input.GetKeyDown(KeyCode.D) && !scale_top_is_rotating){
 
             StartCoroutine(SmoothRotationRoutine(-20, .2f, true));
@@ -54,8 +55,9 @@ public class ScaleRotation : MonoBehaviour
 
             scale_left_arm.transform.rotation = Quaternion.Euler(0,0,-scale_top.transform.rotation.z);
             scale_right_arm.transform.rotation = Quaternion.Euler(0,0,-scale_top.transform.rotation.z);
+
             right_arm_connection_point.transform.rotation = Quaternion.Euler(0,0,-scale_top.transform.rotation.z);
-            
+
             t += Time.deltaTime;
 
             yield return null;

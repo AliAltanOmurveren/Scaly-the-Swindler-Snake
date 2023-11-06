@@ -6,16 +6,21 @@ public class MoveWeights : MonoBehaviour
 {
     // Start is called before the first frame update
     Vector3 mouseWorldPos;
-    public GameObject weight;
+    private GameObject weight;
     TargetJoint2D weightJoint;
+    MouseManager mouseManager;
     void Start()
     {
+        mouseManager = GameObject.Find("MouseManager").GetComponent<MouseManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButton(0)){
+
+        weight = mouseManager.clickedWeight;
+
+        if(Input.GetMouseButton(0) && weight){
             mouseWorldPos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
             if(!weight.GetComponent<TargetJoint2D>()){
