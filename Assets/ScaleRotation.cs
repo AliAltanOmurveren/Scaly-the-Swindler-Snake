@@ -8,6 +8,7 @@ public class ScaleRotation : MonoBehaviour
 {
     public GameObject scale_top;
     public GameObject scale_right_arm;
+    public GameObject right_arm_connection_point;
     public GameObject scale_left_arm;
     bool scale_top_is_rotating = false;
     float turn_amount = 20;
@@ -23,14 +24,19 @@ public class ScaleRotation : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.D) && !scale_top_is_rotating){
 
-            //StartCoroutine(Smooth());
-
             StartCoroutine(SmoothRotationRoutine(-20, .2f, true));
 
         }else if(Input.GetKeyDown(KeyCode.A) && !scale_top_is_rotating){
             
             StartCoroutine(SmoothRotationRoutine(20, .2f, true));
 
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        
+        if (!scale_top_is_rotating){
+            StartCoroutine(SmoothRotationRoutine(-20, .2f, true));
         }
     }
 
@@ -48,7 +54,8 @@ public class ScaleRotation : MonoBehaviour
 
             scale_left_arm.transform.rotation = Quaternion.Euler(0,0,-scale_top.transform.rotation.z);
             scale_right_arm.transform.rotation = Quaternion.Euler(0,0,-scale_top.transform.rotation.z);
-
+            right_arm_connection_point.transform.rotation = Quaternion.Euler(0,0,-scale_top.transform.rotation.z);
+            
             t += Time.deltaTime;
 
             yield return null;
