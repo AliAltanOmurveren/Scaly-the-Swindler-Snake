@@ -33,10 +33,12 @@ public class MouseManager : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
 
-            RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(mousePos2D, Vector2.zero);
 
-            if(hit.collider != null){
-                clickedWeight = hit.transform.gameObject;
+            foreach(RaycastHit2D hit in hits){
+                if(hit.transform.CompareTag("Weight")){
+                    clickedWeight = hit.transform.gameObject;
+                }
             }
         }
 

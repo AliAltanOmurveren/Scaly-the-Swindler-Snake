@@ -6,11 +6,15 @@ using UnityEngine;
 
 public class ScaleRotation : MonoBehaviour
 {
-    public GameObject scale_top;
-    public GameObject scale_right_arm;
-    public GameObject right_arm_connection_point;
-    public GameObject scale_left_arm;
-    bool scale_top_is_rotating = false;
+    public GameObject scaleTop;
+    public GameObject scaleRightArm;
+    public GameObject rightArmConnectionPoint;
+    public GameObject scaleLeftArm;
+    public bool scaleTopIsRotating = false;
+    public float currentZRotation = 0; 
+    public RightArm rightArm;
+    float totalWeight;
+    float turnSpeed = 40f;
 
     // Start is called before the first frame update
     void Start()
@@ -21,56 +25,68 @@ public class ScaleRotation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        scale_right_arm.transform.position = right_arm_connection_point.transform.position;
 
-        if(Input.GetKeyDown(KeyCode.D) && !scale_top_is_rotating){
+        totalWeight = rightArm.totalWeight;
 
-            StartCoroutine(SmoothRotationRoutine(-20, .2f, true));
+        if(Input.GetKeyDown(KeyCode.D) && !scaleTopIsRotating){
 
-        }else if(Input.GetKeyDown(KeyCode.A) && !scale_top_is_rotating){
+            StartCoroutine(SmoothRotationRoutine(-20, .2f));
+
+        }else if(Input.GetKeyDown(KeyCode.A) && !scaleTopIsRotating){
             
-            StartCoroutine(SmoothRotationRoutine(20, .2f, true));
+            StartCoroutine(SmoothRotationRoutine(20, .2f));
 
         }
-    }
 
-    private void OnCollisionEnter2D(Collision2D other) {
+        float scaleTopAngle = scaleTop.transform.localRotation.eulerAngles.z > 180? scaleTop.transform.localRotation.eulerAngles.z - 360 : scaleTop.transform.localRotation.eulerAngles.z;
+        float weightAngle = -totalWeight * 2;
+        float angleDiff = scaleTopAngle - weightAngle; 
         
-        if (!scale_top_is_rotating){
-            StartCoroutine(SmoothRotationRoutine(-20, .2f, true));
+        if(angleDiff > 0){
+            scaleTop.transform.Rotate(0, 0, -turnSpeed * Time.deltaTime);
+        }else if(angleDiff < 0){
+            scaleTop.transform.Rotate(0, 0, turnSpeed * Time.deltaTime);
+        }
+        
+        scaleLeftArm.transform.rotation = Quaternion.Euler(0,0,-scaleTop.transform.rotation.z);
+        scaleRightArm.transform.rotation = Quaternion.Euler(0,0,-scaleTop.transform.rotation.z);
+        rightArmConnectionPoint.transform.rotation = Quaternion.Euler(0,0,-scaleTop.transform.rotation.z);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+    }
+
+    public void rotateScaleTo(int value, float duration){
+        if(value != currentZRotation){  
+            StartCoroutine(SmoothRotationRoutine(value, duration));
         }
     }
 
-    IEnumerator SmoothRotationRoutine(float amount, float duration, bool bop){
-        scale_top_is_rotating = true;
+    IEnumerator SmoothRotationRoutine(float amount, float duration){
+        scaleTopIsRotating = true;
 
-        Quaternion starting_rotation = scale_top.transform.rotation;
-        Quaternion final_rotation = Quaternion.Euler(0, 0, scale_top.transform.rotation.eulerAngles.z + amount);
+        Quaternion starting_rotation = scaleTop.transform.rotation;
+        Quaternion final_rotation = Quaternion.Euler(0, 0, amount);
+        //Quaternion final_rotation = Quaternion.Euler(0, 0, scaleTop.transform.rotation.eulerAngles.z + amount);
 
         float t = 0f;
 
         while (t < duration){
 
-            scale_top.transform.rotation = Quaternion.Slerp(starting_rotation, final_rotation, t / duration);
+            scaleTop.transform.rotation = Quaternion.Slerp(starting_rotation, final_rotation, t / duration);
+            currentZRotation = scaleTop.transform.rotation.eulerAngles.z;
 
-            scale_left_arm.transform.rotation = Quaternion.Euler(0,0,-scale_top.transform.rotation.z);
-            scale_right_arm.transform.rotation = Quaternion.Euler(0,0,-scale_top.transform.rotation.z);
-
-            right_arm_connection_point.transform.rotation = Quaternion.Euler(0,0,-scale_top.transform.rotation.z);
+            scaleLeftArm.transform.rotation = Quaternion.Euler(0,0,-scaleTop.transform.rotation.z);
+            scaleRightArm.transform.rotation = Quaternion.Euler(0,0,-scaleTop.transform.rotation.z);
 
             t += Time.deltaTime;
 
             yield return null;
         }
 
-        scale_top.transform.rotation = final_rotation;
+        scaleTop.transform.rotation = final_rotation;
 
-        scale_top_is_rotating = false;
-        
-        if (bop){
-            StartCoroutine(SmoothRotationRoutine(-amount / 2, .5f, false));
-        }
-        
+        scaleTopIsRotating = false;
 
         yield break; 
     }
