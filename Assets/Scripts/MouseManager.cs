@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class MouseManager : MonoBehaviour
 {
     public GameObject clickedWeight;
+
+    public SpriteShapeController ssp;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +18,15 @@ public class MouseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Spline spline = ssp.spline;
+
+        if(clickedWeight == null){
+            spline.SetPosition(0, Camera.main.ScreenToWorldPoint(Input.mousePosition) - ssp.transform.position);
+        }else{
+            spline.SetPosition(0, clickedWeight.transform.position - ssp.transform.position);
+        }
+
+
         if(Input.GetMouseButtonDown(0)){
             /*
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

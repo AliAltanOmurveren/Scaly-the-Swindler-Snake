@@ -13,7 +13,7 @@ public class ScaleRotation : MonoBehaviour
     public bool scaleTopIsRotating = false;
     public float currentZRotation = 0; 
     public RightArm rightArm;
-    float totalWeight;
+    public LeftArm leftArm;
     float turnSpeed = 40f;
 
     // Start is called before the first frame update
@@ -26,11 +26,9 @@ public class ScaleRotation : MonoBehaviour
     void Update()
     {
 
-        totalWeight = rightArm.totalWeight;
-
         if(Input.GetKeyDown(KeyCode.D) && !scaleTopIsRotating){
 
-            StartCoroutine(SmoothRotationRoutine(-20, .2f));
+            scaleTop.transform.Rotate(0, 0, turnSpeed );
 
         }else if(Input.GetKeyDown(KeyCode.A) && !scaleTopIsRotating){
             
@@ -39,7 +37,7 @@ public class ScaleRotation : MonoBehaviour
         }
 
         float scaleTopAngle = scaleTop.transform.localRotation.eulerAngles.z > 180? scaleTop.transform.localRotation.eulerAngles.z - 360 : scaleTop.transform.localRotation.eulerAngles.z;
-        float weightAngle = -totalWeight * 2;
+        float weightAngle = (leftArm.totalWeight * 2) - rightArm.totalWeight * 2; 
         float angleDiff = scaleTopAngle - weightAngle; 
         
         if(angleDiff > 0){

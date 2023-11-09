@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Weight
   - Arm
+  - Product
   layers:
   - Default
   - TransparentFX
