@@ -22,8 +22,17 @@ public class MouseManager : MonoBehaviour
 
         if(clickedWeight == null){
             spline.SetPosition(0, Camera.main.ScreenToWorldPoint(Input.mousePosition) - ssp.transform.position);
+            
+            Vector3 spline0Pos = spline.GetPosition(0);
+            Vector3 spline2Pos = spline.GetPosition(2);
+            spline.SetPosition(1, (spline0Pos + spline2Pos) / 2);
+
         }else{
             spline.SetPosition(0, clickedWeight.transform.position - ssp.transform.position);
+            
+            Vector3 spline0Pos = spline.GetPosition(0);
+            Vector3 spline2Pos = spline.GetPosition(2);
+            spline.SetPosition(1, (spline0Pos + spline2Pos) / 2);
         }
 
 
