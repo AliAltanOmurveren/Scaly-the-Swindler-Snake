@@ -12,7 +12,7 @@ public class MouseManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -22,7 +22,7 @@ public class MouseManager : MonoBehaviour
 
         if(clickedWeight == null){
             spline.SetPosition(0, Camera.main.ScreenToWorldPoint(Input.mousePosition) - ssp.transform.position);
-            
+
             Vector3 spline0Pos = spline.GetPosition(0);
             Vector3 spline2Pos = spline.GetPosition(2);
             spline.SetPosition(1, (spline0Pos + spline2Pos) / 2);
@@ -37,19 +37,6 @@ public class MouseManager : MonoBehaviour
 
 
         if(Input.GetMouseButtonDown(0)){
-            /*
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            RaycastHit hit;
-
-            if(Physics.Raycast(ray, out hit, 100)){
-                    Debug.Log("Weight clicked");
-
-                if(hit.transform.CompareTag("Weight")){
-                    clickedWeight = hit.transform.gameObject;
-                }
-            }
-            */
 
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
@@ -65,6 +52,6 @@ public class MouseManager : MonoBehaviour
 
         if(Input.GetMouseButtonUp(0)){
             clickedWeight = null;
-        }
+        }         
     }
 }
