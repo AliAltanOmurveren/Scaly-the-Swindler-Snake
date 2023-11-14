@@ -17,8 +17,8 @@ public class GameStateMachine: MonoBehaviour
     public WeighingMinigameState weighingMinigameState;
 
     private void Start() {
-        customerEntranceState = gameObject.AddComponent<CustomerEntranceState>();
-        magicWeightMinigameState = gameObject.AddComponent<MagicWeightMinigameState>();
+        //customerEntranceState = gameObject.AddComponent<CustomerEntranceState>();
+        //magicWeightMinigameState = gameObject.AddComponent<MagicWeightMinigameState>();
 
         Initialize(customerEntranceState);    
     }
