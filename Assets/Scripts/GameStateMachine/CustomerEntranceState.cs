@@ -68,6 +68,10 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
 
             yield return null;
         }
+
+        yield return new WaitForSeconds(1);
+
+        gameStateMachine.TransitionTo(gameStateMachine.magicWeightMinigameState);
     }
 
     IEnumerator BopCustomer(float seconds, int times){

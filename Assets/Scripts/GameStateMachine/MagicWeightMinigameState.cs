@@ -5,6 +5,7 @@ using UnityEngine;
 public class MagicWeightMinigameState : MonoBehaviour, IGameState
 {
     GameStateMachine gameStateMachine;
+    public GameObject timeBar;
 
     private void Start() {
         gameStateMachine = gameObject.GetComponent<GameStateMachine>();
@@ -13,6 +14,8 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
     public void Enter()
     {
         Debug.Log("MagicState enter");
+
+        timeBar.GetComponent<LeftTimeBar>().StartTimer(5);
     }
 
     public void Exit()
@@ -22,6 +25,6 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
 
     void IGameState.Update()
     {
-        Debug.Log("State is MagicState");
+        
     }
 }
