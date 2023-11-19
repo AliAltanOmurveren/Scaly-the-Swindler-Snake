@@ -43,7 +43,7 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
     IEnumerator MoveCustomerX(float seconds){
         float t = 0;
 
-        while(t < seconds){
+        while(t < 1){
             t += Time.deltaTime / seconds;
 
             Vector3 lerpedPosition = Vector3.Lerp(customerSpawn.position, customerTargetPosition.position, t);
@@ -58,6 +58,7 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
         yield return new WaitForSeconds(arriveTime);
 
         product = Instantiate(productPrefab, customerTargetPosition.position, Quaternion.identity);
+        product.name = "Product";
 
         float t = 0;
 

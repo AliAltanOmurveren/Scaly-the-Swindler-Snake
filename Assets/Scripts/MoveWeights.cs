@@ -11,7 +11,7 @@ public class MoveWeights : MonoBehaviour
     MouseManager mouseManager;
     void Start()
     {
-        mouseManager = GameObject.Find("MouseManager").GetComponent<MouseManager>();
+        mouseManager = GameObject.Find("Mouse Manager").GetComponent<MouseManager>();
     }
 
     // Update is called once per frame

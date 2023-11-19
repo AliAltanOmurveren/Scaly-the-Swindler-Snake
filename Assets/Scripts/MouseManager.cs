@@ -6,6 +6,9 @@ using UnityEngine.U2D;
 public class MouseManager : MonoBehaviour
 {
     public GameObject clickedWeight;
+    public GameObject releasingArms;
+
+    public GameStateMachine gameStateMachine;
 
     public SpriteShapeController ssp;
 
@@ -13,6 +16,8 @@ public class MouseManager : MonoBehaviour
     void Start()
     {
         Cursor.visible = false;
+
+        gameStateMachine = GameObject.Find("Game State Machine").GetComponent<GameStateMachine>();
     }
 
     // Update is called once per frame
@@ -46,6 +51,8 @@ public class MouseManager : MonoBehaviour
             foreach(RaycastHit2D hit in hits){
                 if(hit.transform.CompareTag("Weight")){
                     clickedWeight = hit.transform.gameObject;
+                }else if(hit.transform.CompareTag("Switch") && (object)gameStateMachine.currentGameState == gameStateMachine.magicWeightMinigameState){
+                    releasingArms.GetComponent<ReleasingArms>().OpenArms();
                 }
             }
         }

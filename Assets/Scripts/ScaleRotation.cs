@@ -40,10 +40,12 @@ public class ScaleRotation : MonoBehaviour
         float weightAngle = (leftArm.totalWeight * 2) - rightArm.totalWeight * 2; 
         float angleDiff = scaleTopAngle - weightAngle; 
         
-        if(angleDiff > 0){
+        if(angleDiff > 0.1f){
             scaleTop.transform.Rotate(0, 0, -turnSpeed * Time.deltaTime);
-        }else if(angleDiff < 0){
+        }else if(angleDiff < -0.1f){
             scaleTop.transform.Rotate(0, 0, turnSpeed * Time.deltaTime);
+        }else{
+            scaleTop.transform.rotation = Quaternion.Euler(0, 0, weightAngle);
         }
         
         scaleLeftArm.transform.rotation = Quaternion.Euler(0,0,-scaleTop.transform.rotation.z);

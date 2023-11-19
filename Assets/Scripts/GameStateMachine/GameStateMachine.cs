@@ -10,11 +10,12 @@ public interface IGameState {
 
 public class GameStateMachine: MonoBehaviour
 {
-    IGameState currentGameState;
+    public IGameState currentGameState;
 
     public CustomerEntranceState customerEntranceState;
     public MagicWeightMinigameState magicWeightMinigameState;
     public WeighingMinigameState weighingMinigameState;
+    public FailState failState;
 
     private void Start() {
         //customerEntranceState = gameObject.AddComponent<CustomerEntranceState>();
