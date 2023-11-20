@@ -7,6 +7,7 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
     GameStateMachine gameStateMachine;
     public GameObject timeBar;
     GameObject customer;
+    CustomerSpriteManager customerSpriteManager;
     MagicWeight magicWeight;
     float minigameDuration = 5;
 
@@ -19,6 +20,10 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
         Debug.Log("MagicState enter");
 
         customer = GameObject.Find("Customer");
+        customerSpriteManager = customer.GetComponent<CustomerSpriteManager>();
+        
+        StartCoroutine(CustomerLookRight(0));
+
         magicWeight = GameObject.Find("Magic Weight").GetComponent<MagicWeight>();
 
         timeBar.GetComponent<LeftTimeBar>().StartTimer(minigameDuration);
@@ -29,6 +34,7 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
     public void Exit()
     {
         Debug.Log("Magicstate exit");
+        timeBar.GetComponent<LeftTimeBar>().ResetTimer();
         StopAllCoroutines();
     }
 
@@ -70,12 +76,18 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
     IEnumerator CustomerLookLeft(float duration){
         customer.GetComponent<SpriteRenderer>().flipX = true;
         customer.GetComponent<Customer>().isLookingRight = false;
+
+        customerSpriteManager.ChangeSpriteToLookingRight(customerSpriteManager.currentIndex);
+
         yield return new WaitForSeconds(duration);
     }
 
     IEnumerator CustomerLookRight(float duration){
         customer.GetComponent<SpriteRenderer>().flipX = false;
         customer.GetComponent<Customer>().isLookingRight = true;
+
+        customerSpriteManager.ChangeSpriteToSuspicious(customerSpriteManager.currentIndex);
+
         yield return new WaitForSeconds(duration);
     }
 }

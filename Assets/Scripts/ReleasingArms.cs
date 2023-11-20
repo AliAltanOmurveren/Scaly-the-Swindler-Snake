@@ -17,7 +17,7 @@ public class ReleasingArms : MonoBehaviour
     }
 
     public void CloseArms(){
-        StartCoroutine(CloseArmsRoutine(2));
+        StartCoroutine(CloseArmsRoutine(1));
     }
 
     IEnumerator CloseArmsRoutine(float duration){

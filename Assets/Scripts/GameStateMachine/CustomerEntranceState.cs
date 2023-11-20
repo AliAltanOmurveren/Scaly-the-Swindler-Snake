@@ -9,10 +9,15 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
     GameStateMachine gameStateMachine;
 
     public GameObject customer;
+    CustomerSpriteManager customerSpriteManager;
     public Transform customerSpawn;
     public Transform customerTargetPosition;
 
     GameObject product;
+
+    public GameObject magicWeightPrefab;
+    public Transform magicWeightSpawnPos;
+
     public GameObject productPrefab;
     public Transform productSpawnPos;
     public Transform productTargetPosition;
@@ -25,6 +30,16 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
 
     public void Enter()
     {
+        customerSpriteManager = customer.GetComponent<CustomerSpriteManager>();
+        int index = UnityEngine.Random.Range(0, customerSpriteManager.angrySprites.Length);
+
+        customerSpriteManager.currentIndex = index;
+
+        customerSpriteManager.ChangeSpriteToLookingRight(customerSpriteManager.currentIndex);
+        customer.GetComponent<SpriteRenderer>().flipX = false;
+
+        Instantiate(magicWeightPrefab, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";
+
         StartCoroutine(MoveCustomerX(arriveTime));
         StartCoroutine(BopCustomer(arriveTime, 6));
         StartCoroutine(MoveProduct(1));
@@ -57,7 +72,7 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
     IEnumerator MoveProduct(float seconds) {
         yield return new WaitForSeconds(arriveTime);
 
-        product = Instantiate(productPrefab, customerTargetPosition.position, Quaternion.identity);
+        product = Instantiate(productPrefab, customerTargetPosition.position, Quaternion.Euler(0,0,0));
         product.name = "Product";
 
         float t = 0;

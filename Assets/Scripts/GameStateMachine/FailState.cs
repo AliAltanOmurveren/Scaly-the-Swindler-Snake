@@ -6,11 +6,20 @@ public class FailState : MonoBehaviour, IGameState
 {
     GameObject customer;
 
+    GameStateMachine gameStateMachine;
+
+    CustomerSpriteManager customerSpriteManager;
+
     public Transform customerSpawn;
     public Transform customerTargetPosition;
     public void Enter()
     {
+        gameStateMachine = GameObject.Find("Game State Machine").GetComponent<GameStateMachine>();
+
         customer = GameObject.Find("Customer");
+        customerSpriteManager = customer.GetComponent<CustomerSpriteManager>();
+
+        customerSpriteManager.ChangeSpriteToAngry(customerSpriteManager.currentIndex);
 
         StartCoroutine(FailRoutine());
     }
@@ -44,6 +53,9 @@ public class FailState : MonoBehaviour, IGameState
     IEnumerator CustomerLookLeft(float duration){
         customer.GetComponent<SpriteRenderer>().flipX = true;
         customer.GetComponent<Customer>().isLookingRight = false;
+
+        customerSpriteManager.ChangeSpriteToAngry(customerSpriteManager.currentIndex);
+
         yield return new WaitForSeconds(duration);
     }
 
@@ -56,5 +68,7 @@ public class FailState : MonoBehaviour, IGameState
         yield return CustomerLookLeft(0);
 
         yield return MoveCustomerX(2);
+
+        gameStateMachine.TransitionTo(gameStateMachine.customerEntranceState);
     }
 }
