@@ -6,6 +6,7 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
 {
     GameStateMachine gameStateMachine;
     public GameObject timeBar;
+    public LeftTimeBar leftTimeBar;
     GameObject customer;
     CustomerSpriteManager customerSpriteManager;
     MagicWeight magicWeight;
@@ -34,6 +35,8 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
     public void Exit()
     {
         Debug.Log("Magicstate exit");
+        customerSpriteManager.ChangeSpriteToLookingRight(customerSpriteManager.currentIndex);
+        customer.GetComponent<SpriteRenderer>().flipX = false;
         timeBar.GetComponent<LeftTimeBar>().ResetTimer();
         StopAllCoroutines();
     }
@@ -41,11 +44,19 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
     void IGameState.Update()
     {
         if(magicWeight.isFalling && customer.GetComponent<Customer>().isLookingRight){
+            Fail();
+        }
+
+        if(leftTimeBar.timeExpired && !magicWeight.isTouchingTray){
+            gameStateMachine.TransitionTo(gameStateMachine.weighingMinigameState);
+        }
+    }
+
+    void Fail(){
             Debug.Log("Fail");
             Destroy(magicWeight.gameObject);
             timeBar.GetComponent<LeftTimeBar>().StopTimer();
             gameStateMachine.TransitionTo(gameStateMachine.failState);
-        }
     }
 
     IEnumerator CustomerAlternateLook(float totalDuration){

@@ -12,6 +12,7 @@ public class ScaleRotation : MonoBehaviour
     public GameObject scaleLeftArm;
     public bool scaleTopIsRotating = false;
     public float currentZRotation = 0; 
+    public float weightAngle;
     public RightArm rightArm;
     public LeftArm leftArm;
     float turnSpeed = 40f;
@@ -37,7 +38,7 @@ public class ScaleRotation : MonoBehaviour
         }
 
         float scaleTopAngle = scaleTop.transform.localRotation.eulerAngles.z > 180? scaleTop.transform.localRotation.eulerAngles.z - 360 : scaleTop.transform.localRotation.eulerAngles.z;
-        float weightAngle = (leftArm.totalWeight * 2) - rightArm.totalWeight * 2; 
+        weightAngle = (leftArm.totalWeight * 2) - rightArm.totalWeight * 2; 
         float angleDiff = scaleTopAngle - weightAngle; 
         
         if(angleDiff > 0.1f){

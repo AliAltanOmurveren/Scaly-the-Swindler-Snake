@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeftTimeBar : MonoBehaviour
+public class RightTimeBar : MonoBehaviour
 {
     float initialScale;
     public bool timeExpired;
+
     public void StartTimer(float seconds){
         StartCoroutine(Timer(seconds));
     }
@@ -23,7 +24,6 @@ public class LeftTimeBar : MonoBehaviour
         timeExpired = false;
 
         float t = 0;
-        
         initialScale = transform.localScale.x;
 
         while (t < 1){
