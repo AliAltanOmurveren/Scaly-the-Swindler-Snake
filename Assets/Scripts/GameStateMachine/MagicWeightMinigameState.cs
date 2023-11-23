@@ -64,7 +64,7 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
 
         while (t < totalDuration){
 
-            float timeOnLeft = Random.Range(0.75f, 1.1f);
+            float timeOnLeft = Random.Range(0.85f, 1.1f);
             t += timeOnLeft;
             if(t > totalDuration){
                 break;

@@ -6,6 +6,8 @@ public class FailState : MonoBehaviour, IGameState
 {
     GameObject customer;
 
+    public RightArm rightArm;
+
     GameStateMachine gameStateMachine;
 
     CustomerSpriteManager customerSpriteManager;
@@ -14,6 +16,17 @@ public class FailState : MonoBehaviour, IGameState
     public Transform customerTargetPosition;
     public void Enter()
     {
+        GameObject[] weightsToDestroy = GameObject.FindGameObjectsWithTag("Weight");
+
+        if(weightsToDestroy != null){
+            foreach (GameObject weight in weightsToDestroy){
+                Destroy(weight);
+            }
+
+            rightArm.totalWeightContributers = new List<GameObject>();
+            rightArm.bottomTouchingWeights = new List<GameObject>();
+        }
+
         gameStateMachine = GameObject.Find("Game State Machine").GetComponent<GameStateMachine>();
 
         customer = GameObject.Find("Customer");

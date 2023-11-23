@@ -53,6 +53,16 @@ public class MouseManager : MonoBehaviour
                     clickedWeight = hit.transform.gameObject;
                 }else if(hit.transform.CompareTag("Switch") && (object)gameStateMachine.currentGameState == gameStateMachine.magicWeightMinigameState){
                     releasingArms.GetComponent<ReleasingArms>().OpenArms();
+                }else if(hit.transform.CompareTag("WeightDispenser")){
+                    WeightDispenser weightDispenser = hit.transform.GetComponent<WeightDispenser>();
+
+                    GameObject weight = Instantiate(weightDispenser.weightPrefab, new Vector3(mousePos.x, mousePos.y, -1), Quaternion.identity);
+
+                    Physics2D.IgnoreCollision(weight.GetComponent<Collider2D>(), weightDispenser.transform.GetComponent<Collider2D>());
+                    
+                    weight.GetComponent<WeightManager>().weight = weightDispenser.weight;
+
+                    clickedWeight = weight;
                 }
             }
         }
