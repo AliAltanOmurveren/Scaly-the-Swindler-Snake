@@ -9,6 +9,7 @@ TagManager:
   - Product
   - Switch
   - MagicWeight
+  - WeightDispenser
   layers:
   - Default
   - TransparentFX
