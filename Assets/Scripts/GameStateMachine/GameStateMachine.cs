@@ -12,6 +12,7 @@ public class GameStateMachine: MonoBehaviour
 {
     public IGameState currentGameState;
 
+    public TutorialState tutorialState;
     public CustomerEntranceState customerEntranceState;
     public MagicWeightMinigameState magicWeightMinigameState;
     public WeighingMinigameState weighingMinigameState;
@@ -22,7 +23,7 @@ public class GameStateMachine: MonoBehaviour
         //customerEntranceState = gameObject.AddComponent<CustomerEntranceState>();
         //magicWeightMinigameState = gameObject.AddComponent<MagicWeightMinigameState>();
 
-        Initialize(customerEntranceState);    
+        Initialize(tutorialState);    
     }
 
     void Initialize(IGameState gameState) {

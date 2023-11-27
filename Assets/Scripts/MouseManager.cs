@@ -50,10 +50,17 @@ public class MouseManager : MonoBehaviour
 
             foreach(RaycastHit2D hit in hits){
                 if(hit.transform.CompareTag("Weight")){
+
                     clickedWeight = hit.transform.gameObject;
-                }else if(hit.transform.CompareTag("Switch") && (object)gameStateMachine.currentGameState == gameStateMachine.magicWeightMinigameState){
+
+                }else if(hit.transform.CompareTag("Switch") && 
+                            ((object)gameStateMachine.currentGameState == gameStateMachine.magicWeightMinigameState || 
+                            (object)gameStateMachine.currentGameState == gameStateMachine.tutorialState)){
+
                     releasingArms.GetComponent<ReleasingArms>().OpenArms();
+
                 }else if(hit.transform.CompareTag("WeightDispenser")){
+
                     WeightDispenser weightDispenser = hit.transform.GetComponent<WeightDispenser>();
 
                     GameObject weight = Instantiate(weightDispenser.weightPrefab, new Vector3(mousePos.x, mousePos.y, -1), Quaternion.identity);

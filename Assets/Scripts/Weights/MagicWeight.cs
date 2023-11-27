@@ -10,6 +10,8 @@ public class MagicWeight : MonoBehaviour
     public LeftArm leftArm;
     public int weight;
 
+    bool tutorialOnce = true;
+
     private void Start() {
         gameStateMachine = GameObject.Find("Game State Machine").GetComponent<GameStateMachine>();
         leftArm = GameObject.Find("scale_left_tray").GetComponent<LeftArm>();
@@ -22,16 +24,28 @@ public class MagicWeight : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if(other.gameObject.CompareTag("Arm") && (object)gameStateMachine.currentGameState == gameStateMachine.magicWeightMinigameState){
+        if(other.gameObject.CompareTag("Arm") && 
+            (object)gameStateMachine.currentGameState == gameStateMachine.magicWeightMinigameState){
+
             leftArm.totalWeight += weight;
             isTouchingTray = true;
             gameStateMachine.TransitionTo(gameStateMachine.weighingMinigameState);
         }
+
+        if(other.gameObject.CompareTag("Arm") && 
+            (object)gameStateMachine.currentGameState == gameStateMachine.tutorialState &&
+            tutorialOnce){
+
+                tutorialOnce = false;
+                leftArm.totalWeight += weight;
+                isTouchingTray = true;
+            }
     }
 
     private void OnDestroy() {
         if(isTouchingTray){
             leftArm.totalWeight -= weight;
+            isTouchingTray = false;
         }
     }
 }

@@ -42,7 +42,23 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
 
         StartCoroutine(MoveCustomerX(arriveTime));
         StartCoroutine(BopCustomer(arriveTime, 6));
-        StartCoroutine(MoveProduct(1));
+        StartCoroutine(MoveProduct(1, true));
+    }
+
+    public void EnterForTutorial(){
+        customerSpriteManager = customer.GetComponent<CustomerSpriteManager>();
+        int index = UnityEngine.Random.Range(0, customerSpriteManager.angrySprites.Length);
+
+        customerSpriteManager.currentIndex = index;
+
+        customerSpriteManager.ChangeSpriteToLookingRight(customerSpriteManager.currentIndex);
+        customer.GetComponent<SpriteRenderer>().flipX = false;
+
+        Instantiate(magicWeightPrefab, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";
+
+        StartCoroutine(MoveCustomerX(arriveTime));
+        StartCoroutine(BopCustomer(arriveTime, 6));
+        StartCoroutine(MoveProduct(1, false));
     }
 
     public void Exit()
@@ -69,7 +85,7 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
         }
     }
 
-    IEnumerator MoveProduct(float seconds) {
+    IEnumerator MoveProduct(float seconds, bool transition) {
         yield return new WaitForSeconds(arriveTime);
 
         product = Instantiate(productPrefab, customerTargetPosition.position, Quaternion.Euler(0,0,0));
@@ -87,7 +103,8 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
 
         yield return new WaitForSeconds(1);
 
-        gameStateMachine.TransitionTo(gameStateMachine.magicWeightMinigameState);
+        if(transition)
+            gameStateMachine.TransitionTo(gameStateMachine.magicWeightMinigameState);
     }
 
     IEnumerator BopCustomer(float seconds, int times){
