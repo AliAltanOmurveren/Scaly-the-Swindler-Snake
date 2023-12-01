@@ -13,6 +13,7 @@ public class TutorialState : MonoBehaviour, IGameState
     public GameObject arrowPrefab;
     public Transform arrowSwitchPos;
     public Transform arrowMagicWeightPos;
+    public bool canClickSwitch = false;
 
     float letterSpeed = 0.05f;
     public CustomerEntranceState customerEntranceState;
@@ -47,7 +48,7 @@ public class TutorialState : MonoBehaviour, IGameState
     }
 
     IEnumerator TutorialChainRoutine(){
-       /*
+
         yield return new WaitForSeconds(2);
 
         uiController.DialogueBoxPopIn(1);
@@ -76,7 +77,7 @@ public class TutorialState : MonoBehaviour, IGameState
         uiController.DialogueBoxPopOut(1);
 
         yield return WaitForUI();
-*/
+
         customerEntranceState.EnterForTutorial();
 
         yield return new WaitForSeconds(4);
@@ -97,17 +98,13 @@ public class TutorialState : MonoBehaviour, IGameState
 
         arrowSwitch.SetActive(false);
 
-        GameObject arrowMagicWeight = Instantiate(arrowPrefab, new Vector3(arrowMagicWeightPos.position.x, arrowMagicWeightPos.position.y, -50), Quaternion.Euler(0, 0, 90));
-
-        yield return new WaitForSeconds(2);
-
-        Destroy(arrowMagicWeight);
-
         uiController.DialogueBoxPopOut(1);
 
         yield return WaitForUI();
 
         arrowSwitch.SetActive(true);
+
+        canClickSwitch = true;
 
         magicWeight = GameObject.Find("Magic Weight").GetComponent<MagicWeight>();
         
@@ -115,13 +112,30 @@ public class TutorialState : MonoBehaviour, IGameState
             yield return null;
         }
 
+        Destroy(arrowSwitch);
+
+        canClickSwitch = false;
+
         customer.GetComponent<SpriteRenderer>().flipX = false;
 
         uiController.DialogueBoxPopIn(1);
 
         yield return WaitForUI();
 
-        uiController.ChangeText("Finally guess the total weight. Time is limited so be careful. Good Luck", 0.05f);
+        uiController.ChangeText("Finally guess the total weight. Time is limited so be careful. Good Luck!", 0.05f);
 
+        yield return WaitForUI();
+        yield return WaitForClick();
+
+        uiController.DialogueBoxPopOut(1);
+
+        yield return WaitForUI();
+        yield return new WaitForSeconds(1);
+
+        yield return null;
+        gameStateMachine.TransitionTo(gameStateMachine.customerEntranceState);
+
+
+        yield return null;
     }
 }

@@ -18,7 +18,6 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
 
     public void Enter()
     {
-        Debug.Log("MagicState enter");
 
         customer = GameObject.Find("Customer");
         customerSpriteManager = customer.GetComponent<CustomerSpriteManager>();
@@ -34,7 +33,6 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
 
     public void Exit()
     {
-        Debug.Log("Magicstate exit");
         customerSpriteManager.ChangeSpriteToLookingRight(customerSpriteManager.currentIndex);
         customer.GetComponent<SpriteRenderer>().flipX = false;
         timeBar.GetComponent<LeftTimeBar>().ResetTimer();
@@ -53,7 +51,6 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
     }
 
     void Fail(){
-            Debug.Log("Fail");
             Destroy(magicWeight.gameObject);
             timeBar.GetComponent<LeftTimeBar>().StopTimer();
             gameStateMachine.TransitionTo(gameStateMachine.failState);
@@ -64,7 +61,7 @@ public class MagicWeightMinigameState : MonoBehaviour, IGameState
 
         while (t < totalDuration){
 
-            float timeOnLeft = Random.Range(0.85f, 1.1f);
+            float timeOnLeft = Random.Range(0.85f, 1.3f);
             t += timeOnLeft;
             if(t > totalDuration){
                 break;

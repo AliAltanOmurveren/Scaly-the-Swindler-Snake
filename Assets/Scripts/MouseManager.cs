@@ -55,11 +55,11 @@ public class MouseManager : MonoBehaviour
 
                 }else if(hit.transform.CompareTag("Switch") && 
                             ((object)gameStateMachine.currentGameState == gameStateMachine.magicWeightMinigameState || 
-                            (object)gameStateMachine.currentGameState == gameStateMachine.tutorialState)){
+                            (object)gameStateMachine.currentGameState == gameStateMachine.tutorialState && gameStateMachine.tutorialState.canClickSwitch)){
 
                     releasingArms.GetComponent<ReleasingArms>().OpenArms();
 
-                }else if(hit.transform.CompareTag("WeightDispenser")){
+                }else if(hit.transform.CompareTag("WeightDispenser") && (object)gameStateMachine.currentGameState == gameStateMachine.weighingMinigameState){
 
                     WeightDispenser weightDispenser = hit.transform.GetComponent<WeightDispenser>();
 

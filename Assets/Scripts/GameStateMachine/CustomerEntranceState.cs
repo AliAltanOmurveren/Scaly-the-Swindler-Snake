@@ -15,12 +15,16 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
 
     GameObject product;
 
-    public GameObject magicWeightPrefab;
+    public GameObject magicWeightPrefab1;
+    public GameObject magicWeightPrefab3;
+    public GameObject magicWeightPrefab5;
+    public GameObject magicWeightPrefab7;
     public Transform magicWeightSpawnPos;
 
-    public GameObject productPrefab;
+    public GameObject[] productPrefabs;
     public Transform productSpawnPos;
     public Transform productTargetPosition;
+    int[] weights = {1, 3, 5, 7};
 
     float arriveTime = 3.0f;
 
@@ -38,7 +42,23 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
         customerSpriteManager.ChangeSpriteToLookingRight(customerSpriteManager.currentIndex);
         customer.GetComponent<SpriteRenderer>().flipX = false;
 
-        Instantiate(magicWeightPrefab, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";
+        if (GameObject.Find("Magic Weight") != null){
+            Destroy(GameObject.Find("Magic Weight"));
+        }
+        
+        if (GameObject.Find("Product") != null){
+            Destroy(GameObject.Find("Product"));
+        }
+
+        if(GameManager.magicWeightWeight == 1){
+            Instantiate(magicWeightPrefab1, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";    
+        }else if(GameManager.magicWeightWeight == 3){
+            Instantiate(magicWeightPrefab3, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";
+        }else if(GameManager.magicWeightWeight == 5){
+            Instantiate(magicWeightPrefab5, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";
+        }else if(GameManager.magicWeightWeight == 7){
+            Instantiate(magicWeightPrefab7, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";
+        }
 
         StartCoroutine(MoveCustomerX(arriveTime));
         StartCoroutine(BopCustomer(arriveTime, 6));
@@ -54,7 +74,15 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
         customerSpriteManager.ChangeSpriteToLookingRight(customerSpriteManager.currentIndex);
         customer.GetComponent<SpriteRenderer>().flipX = false;
 
-        Instantiate(magicWeightPrefab, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";
+        if(GameManager.magicWeightWeight == 1){
+            Instantiate(magicWeightPrefab1, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";    
+        }else if(GameManager.magicWeightWeight == 3){
+            Instantiate(magicWeightPrefab3, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";
+        }else if(GameManager.magicWeightWeight == 5){
+            Instantiate(magicWeightPrefab5, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";
+        }else if(GameManager.magicWeightWeight == 7){
+            Instantiate(magicWeightPrefab7, magicWeightSpawnPos.position, Quaternion.identity).name = "Magic Weight";
+        }
 
         StartCoroutine(MoveCustomerX(arriveTime));
         StartCoroutine(BopCustomer(arriveTime, 6));
@@ -88,8 +116,20 @@ public class CustomerEntranceState : MonoBehaviour, IGameState
     IEnumerator MoveProduct(float seconds, bool transition) {
         yield return new WaitForSeconds(arriveTime);
 
-        product = Instantiate(productPrefab, customerTargetPosition.position, Quaternion.Euler(0,0,0));
+        int index = UnityEngine.Random.Range(0, productPrefabs.Length);
+
+        product = Instantiate(productPrefabs[index], customerTargetPosition.position, Quaternion.Euler(0,0,0));
         product.name = "Product";
+
+        int numOfWeights = UnityEngine.Random.Range(1, 4);
+
+        product.GetComponent<Product>().weight = 0;
+
+        for (int i = 0; i < numOfWeights; i++){
+            int j = UnityEngine.Random.Range(0, weights.Length);
+
+            product.GetComponent<Product>().weight += weights[j];
+        }
 
         float t = 0;
 

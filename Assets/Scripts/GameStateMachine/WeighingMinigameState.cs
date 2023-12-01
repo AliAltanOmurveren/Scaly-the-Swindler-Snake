@@ -22,7 +22,6 @@ public class WeighingMinigameState : MonoBehaviour, IGameState
         winTransitionOnce = true;
 
         gameStateMachine = GameObject.Find("Game State Machine").GetComponent<GameStateMachine>();
-        Debug.Log("weighing minigame enter");
 
         rightTimeBar.StartTimer(gameDuration);
     }
@@ -30,11 +29,7 @@ public class WeighingMinigameState : MonoBehaviour, IGameState
     public void Exit()
     {
         rightTimeBar.ResetTimer();
-        GameObject magicWeight = GameObject.Find("Magic Weight");
         
-        if(magicWeight != null){
-            Destroy(magicWeight);
-        }
     }
 
     void IGameState.Update()
@@ -45,7 +40,7 @@ public class WeighingMinigameState : MonoBehaviour, IGameState
             winTransitionOnce)
         {
             winTransitionOnce = false;
-            Debug.Log("Win");
+            
             gameStateMachine.TransitionTo(gameStateMachine.winState);
         }
 

@@ -11,12 +11,26 @@ public class WinState : MonoBehaviour, IGameState
     public Transform customerTargetPosition;
     GameObject customer;
     GameObject product;
+    GameObject magicWeight;
 
     public void Enter()
     {
         customer = GameObject.Find("Customer");
         gameStateMachine = GameObject.Find("Game State Machine").GetComponent<GameStateMachine>();
         product = GameObject.Find("Product");
+        magicWeight = GameObject.Find("Magic Weight");
+
+        int coinsToAdd = 0;
+
+        if(magicWeight != null){
+            coinsToAdd += magicWeight.GetComponent<MagicWeight>().weight * 2;
+        }
+
+        coinsToAdd += rightArm.totalWeightContributers.Count * 3;
+
+        coinsToAdd += GameManager.trayBonus;
+
+        GameManager.coins += coinsToAdd;
 
         StartCoroutine(MoveCustomerBack(3));
 
@@ -33,6 +47,10 @@ public class WinState : MonoBehaviour, IGameState
 
         if(product != null){
             Destroy(product);
+        }
+
+        if(magicWeight != null){
+            Destroy(magicWeight);
         }
     }
 

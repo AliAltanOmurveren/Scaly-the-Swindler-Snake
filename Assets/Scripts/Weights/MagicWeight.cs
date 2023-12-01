@@ -15,6 +15,11 @@ public class MagicWeight : MonoBehaviour
     private void Start() {
         gameStateMachine = GameObject.Find("Game State Machine").GetComponent<GameStateMachine>();
         leftArm = GameObject.Find("scale_left_tray").GetComponent<LeftArm>();
+
+        GameObject product = GameObject.Find("Product");
+        if(product != null){
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), product.GetComponent<Collider2D>());
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other) {

@@ -9,6 +9,10 @@ public class UIController : MonoBehaviour
     public RectTransform dialogueBox;
     public RectTransform dialogueBoxBackground;
     public TMP_Text dialogueText;
+    public TMP_Text coinsText;
+
+    public Canvas gameUICanvas;
+    public Canvas shopUICanvas;
 
     public bool uiIsChanging = false;
 
@@ -23,7 +27,21 @@ public class UIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        coinsText.text = GameManager.coins.ToString();
+    }
+
+    public void OpenShop(){
+        GameManager.PauseGame();
+        gameUICanvas.gameObject.SetActive(false);
+        shopUICanvas.gameObject.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    public void CloseShop(){
+        GameManager.UnpauseGame();
+        gameUICanvas.gameObject.SetActive(true);
+        shopUICanvas.gameObject.SetActive(false);
+        Cursor.visible = false;
     }
 
     public void DialogueBoxPopIn(float duration){
@@ -53,7 +71,7 @@ public class UIController : MonoBehaviour
 
         float t = 0;
 
-        while(t < 1){
+        while(t < 0.7f){
             t += Time.deltaTime / duration;
 
             dialogueBox.localScale = new Vector3(t, t, t);
@@ -67,7 +85,7 @@ public class UIController : MonoBehaviour
     }
 
     IEnumerator PopOutRoutine(float duration){
-        float t = 1;
+        float t = 0.7f;
 
         while(t > 0){
             t -= Time.deltaTime / duration;

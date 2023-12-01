@@ -6,12 +6,16 @@ public class ReleasingArms : MonoBehaviour
 {
     public GameObject leftArmRelease;
     public GameObject rightArmRelease;
+
+    public GameObject switchButton;
     
     public void OpenArms() {
         leftArmRelease.transform.rotation = Quaternion.Euler(0, 0, -90);
         rightArmRelease.transform.rotation = Quaternion.Euler(0, 0, 90);
 
         GameObject.Find("Magic Weight").GetComponent<MagicWeight>().isFalling = true;
+
+        switchButton.GetComponent<SpriteRenderer>().flipX = true;
 
         CloseArms();
     }
@@ -34,5 +38,7 @@ public class ReleasingArms : MonoBehaviour
 
             yield return null;
         }
+
+        switchButton.GetComponent<SpriteRenderer>().flipX = false;
     }
 }
